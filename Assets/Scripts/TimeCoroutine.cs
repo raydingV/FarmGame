@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TimeCoroutine : MonoBehaviour
 {
     [SerializeField] Text timeText;
-    float timer;
+    float time;
     void Start()
     {
         
@@ -14,7 +14,7 @@ public class TimeCoroutine : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
-        timeText.text = "Time: " + timer.ToString("F0");
+        time += Time.deltaTime;
+        timeText.text = "Time: " + time.ToString("F0");
     }
 }

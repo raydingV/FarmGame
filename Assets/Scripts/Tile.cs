@@ -24,6 +24,7 @@ public class Tile : MonoBehaviour
 
     public GameObject[] tree;
 
+    GameObject[] npcObjectsTag, treesTag;
     public void Init(bool isOffset)
     {
         //_renderer.color = isOffset ? _offsetColor : _baseColor;
@@ -42,15 +43,51 @@ public class Tile : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<PlayerManager>();
         grid = GameObject.Find("GridManager").GetComponent<GridManager>();
 
-        int rand = Random.Range(0, 10);
-        float dist = Vector3.Distance(gameObject.transform.position, npc.transform.position);
+        npcObjectsTag = GameObject.FindGameObjectsWithTag("Distance");
+        treesTag = GameObject.FindGameObjectsWithTag("Tree");
 
-        if(rand == 0 && dist > 5f)
+        int rand = Random.Range(0, 10);
+        float distNpc, distTrees = 0;
+
+        float dist = 0;
+
+        for (int i = 0; i < npcObjectsTag.Length; i++)
+        {
+            distNpc = Vector3.Distance(gameObject.transform.position, npcObjectsTag[i].transform.position);
+
+            if(distNpc < 8f)
+            {
+                dist = 0f;
+                break;
+            }
+            else
+            {
+                dist = 1f;
+            }
+        }
+
+        for (int j = 0; j < treesTag.Length; j++)
+        {
+            distTrees = Vector3.Distance(gameObject.transform.position, treesTag[j].transform.position);
+
+            if(distTrees < 5f)
+            {
+                dist = 0f;
+                break;
+            }
+            else
+            {
+                dist = 1f;
+            }
+        }
+
+        if (rand == 0 && dist > 0f)
         {
             int a = Random.Range(0, 9);
             GameObject newTree = Instantiate(tree[a], gameObject.transform.position, Quaternion.identity);
             newTree.transform.parent = gameObject.transform;
         }
+
     }
 
     private void Update()
@@ -63,6 +100,8 @@ public class Tile : MonoBehaviour
         {
             busy = false;
         }
+
+        _renderer.size += new Vector2(0.05f, 0.01f);
     }
 
     void OnMouseEnter()

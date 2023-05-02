@@ -95,4 +95,14 @@ public class PlayerManager : MonoBehaviour
             gameManager._coinValue += 1;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Exit")
+        {
+            Debug.Log("Exit");
+            gameObject.transform.position = new Vector2(4f, -4f);
+            StartCoroutine(gameManager.HouseExit());
+        }
+    }
 }

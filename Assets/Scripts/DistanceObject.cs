@@ -10,6 +10,8 @@ public class DistanceObject : MonoBehaviour
     bool Click = false;
 
     float distX , distY;
+
+    [SerializeField] float rangeX, rangeY;
     void Start()
     {
         playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
@@ -31,9 +33,20 @@ public class DistanceObject : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (distX <= 1.25f && distY <= 1.25f)
+        Debug.Log("x: " + distX + "y: " + distY);
+        if (distX <= rangeX && distY <= rangeY)
         {
             Click = true;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Distance")
+        {
+            Debug.Log("Destroy");
+            Destroy(gameObject);
+        }
+    }
+
 }
